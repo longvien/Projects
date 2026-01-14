@@ -38,7 +38,7 @@ public class Main extends Application{
             resultLabel.setText(String.valueOf(user.convert()));
         });
 
-        HBox layout = new HBox(10); // spacing = 10px
+        HBox layout = new HBox(30); // spacing = 10px
         layout.getChildren().addAll(label, textField, comboBox, label1, resultLabel, comboBox2, button);
 
         Scene scene = new Scene(layout, 900, 300);
@@ -59,7 +59,7 @@ public class Main extends Application{
                 userChoice2Index = i;
             }
         }
-        return new LengthConverter(userChoice1Index, userChoice2Index, userChoice1, userChoice2, inputValue);
+        return new LengthConverter(userChoice1Index, userChoice2Index, inputValue);
     }
 }
 
