@@ -38,7 +38,7 @@ public class Main extends Application{
             resultLabel.setText(String.valueOf(user.convert()));
         });
 
-        HBox layout = new HBox(30); // spacing = 10px
+        HBox layout = new HBox(50); // spacing = 10px
         layout.getChildren().addAll(label, textField, comboBox, label1, resultLabel, comboBox2, button);
 
         Scene scene = new Scene(layout, 900, 300);
