@@ -1,0 +1,78 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = "com.geometry"
+version = "1.0"
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17) // adjust if needed
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("org.apache.commons:commons-lang3:3.14.0")
+}
+shadowJar {
+    // produce a single fat jar without the "all" classifier so it's easier to consume
+    archiveClassifier.set('')
+    // set a stable name
+    archiveBaseName.set('GeometryAPI')
+    archiveVersion.set("$version")
+
+    // Merge service files (important)
+    mergeServiceFiles()
+
+    // Exclude problematic META-INF signatures
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+
+    // Ensure the fat jar is runnable
+    manifest {
+        attributes(
+                'Main-Class': 'com.geometry.Main'
+        )
+    }
+}
+
+// Make the regular build include the shadow jar so `./gradlew build` creates the fat jar
+// (Previously depended on shadowJar; some environments cause Shadow plugin copy-time errors.)
+// Define a lightweight `fatJar` task that works without the shadow plugin and make `build` depend on it.
+tasks.register('fatJar', Jar) {
+    archiveBaseName.set('GeometryAPI')
+    archiveVersion.set("$version")
+    archiveClassifier.set('')
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes('Main-Class': 'com.geometry.Main')
+    }
+
+    // Include compiled classes and runtime dependencies unpacked
+    from(sourceSets.main.output)
+    from {
+        configurations.runtimeClasspath.filter { it.exists() }.collect { file ->
+            file.isDirectory() ? file : zipTree(file)
+        }
+    }
+}
+
+// Make the regular build include our fatJar
+tasks.build {
+    dependsOn tasks.named('fatJar')
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
