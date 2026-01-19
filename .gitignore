@@ -1,0 +1,10 @@
+# Java / Gradle
+*.jar
+*.war
+*.ear
+/build/
+.gradle/
+
+# IDE
+.idea/
+.DS_Store
