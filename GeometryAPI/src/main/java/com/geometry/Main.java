@@ -1,4 +1,5 @@
 package com.geometry;
+import com.geometry.circle.Circle;
 import com.geometry.quadrilateral.Parallelogram;
 import com.geometry.quadrilateral.Rectangle;
 import com.geometry.quadrilateral.Square;
@@ -41,5 +42,10 @@ public class Main {
         System.out.println("Trapezoid perimeter calculation");
         Trapezoid trapezoid1 = new Trapezoid(8.0, 4.0, 5.0, 7.0);
         System.out.println(trapezoid1.perimeter());
+
+        //circleArea
+        System.out.println("Circle area calculation");
+        Circle circle = new Circle(3.0);
+        System.out.println(circle.area());
     }
 }

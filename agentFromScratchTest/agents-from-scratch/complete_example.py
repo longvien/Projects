@@ -18,7 +18,8 @@ def lesson_01_basic_chat():
     agent = Agent("models/llama-3-8b-instruct.gguf")
     question = input("Please enter your question\n")
     response = agent.simple_generate(question)
-    print(response)
+    for i in range(1):
+        print(response)
 
 def main():
     """Run all lesson examples"""
