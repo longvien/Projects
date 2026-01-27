@@ -18,7 +18,7 @@ public class Main {
         System.out.println(area);
 
         //exceptionHandlingTriangle
-        System.out.println("Triangle area calculating depends on 3 sides");
+        System.out.println("Triangle area calculating depends on 3 sides ");
         try {
         Triangle triangle2 = new Triangle(1, 9, 7);
         System.out.println(triangle2.areaByThreeSides());
