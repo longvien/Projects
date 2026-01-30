@@ -6,7 +6,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 
@@ -18,34 +18,61 @@ public class Main extends Application{
 
     @Override
     public void start(Stage stage) {
-        Label label = new Label("Value to convert:");
-        TextField textField = new TextField();
+        stage.setTitle("Unit Converter Programme");
+        //Menu
+        Menu m = new Menu("Menu");
+        MenuItem m1 = new MenuItem("Length Converter");
+        MenuItem m2 = new MenuItem("Weight Converter");
+        m.getItems().addAll(m1, m2);
+        MenuBar mb = new MenuBar();
+        mb.getMenus().add(m);
+
+        // Length Converter
+        Label labelL = new Label("Value to convert:");
+        TextField textFieldL = new TextField();
         String[] unitLength = {"km", "hm", "dam", "m", "dm", "cm", "mm"};
-        var comboBox = new ComboBox(FXCollections.observableArrayList(unitLength));
-        Label label1 = new Label(" = ");
-        Label resultLabel = new Label();
-        var comboBox2 = new ComboBox(FXCollections.observableArrayList(unitLength));
-        Button button = new Button("Convert");
+        var comboBoxL1 = new ComboBox(FXCollections.observableArrayList(unitLength));
+        Label labelL2 = new Label(" = ");
+        Label resultLabelL = new Label();
+        var comboBoxL2 = new ComboBox(FXCollections.observableArrayList(unitLength));
+        Button buttonL = new Button("Convert");
         //button.setStyle("-fx-background-color: #FF0000;"); set button red.
 
-
-        button.setOnAction(e -> {
-            String value = textField.getText();
+        buttonL.setOnAction(e -> {
+            String value = textFieldL.getText();
             double inputValue = Double.parseDouble(value);
-            String userChoice1 = String.valueOf(comboBox.getValue());
-            String userChoice2 = String.valueOf(comboBox2.getValue());
+            String userChoice1 = String.valueOf(comboBoxL1.getValue());
+            String userChoice2 = String.valueOf(comboBoxL2.getValue());
             LengthConverter user = getLengthConverter(userChoice1, userChoice2, inputValue);
-            resultLabel.setText(String.valueOf(user.convert()));
+            resultLabelL.setText(String.valueOf(user.convert()));
         });
 
-        HBox layout = new HBox(10); // spacing = 10p
-        layout.getChildren().addAll(label, textField, comboBox, label1, resultLabel, comboBox2, button);
+        HBox layoutL = new HBox(labelL, textFieldL, comboBoxL1, labelL2, resultLabelL, comboBoxL2, buttonL);
+        BorderPane root = new BorderPane();
+        root.setTop(mb);
+        root.setCenter(layoutL);
 
-        Scene scene = new Scene(layout, 900, 300);
 
-        stage.setTitle("Unit Converter Programme");
+        // Weight Converter
+        Label labelW = new Label("Value to convert:");
+        TextField textFieldW = new TextField();
+        String[] unitWeight = {"ton", "quintal", "dam", "m", "dm", "cm", "mm"};
+        var comboBoxW1 = new ComboBox(FXCollections.observableArrayList(unitWeight));
+        Label labelW2 = new Label(" = ");
+        Label resultLabelW = new Label();
+        var comboBoxW2 = new ComboBox(FXCollections.observableArrayList(unitWeight));
+        Button buttonW = new Button("Convert");
+
+        HBox layoutW = new HBox(labelW, textFieldW, comboBoxW1, labelW2, resultLabelW, comboBoxW2, buttonW);
+        root.setTop(mb);
+        root.setCenter(layoutW);
+
+        Scene scene = new Scene(root, 1000, 400);
         stage.setScene(scene);
         stage.show();
+
+        m1.setOnAction(e -> root.setCenter(layoutL));
+        m2.setOnAction(e -> root.setCenter(layoutW));
     }
     public static LengthConverter getLengthConverter(String userChoice1, String userChoice2, double inputValue) {
         String[] unitLength = {"km", "hm", "dam", "m", "dm", "cm", "mm"};
@@ -62,15 +89,3 @@ public class Main extends Application{
         return new LengthConverter(userChoice1Index, userChoice2Index, inputValue);
     }
 }
-
-/*public static void lengthConverter() {
-        Scanner user1 = new Scanner(System.in);
-        System.out.println("Please enter the input unit");
-        String userChoice1 = user1.nextLine().trim();
-        System.out.println("Please enter the output unit");
-        String userChoice2 = user1.nextLine().trim();
-        System.out.println("Please enter the input Value");
-        double inputValue = Double.parseDouble(user1.nextLine().trim());
-        LengthConverter user = getLengthConverter(userChoice1, userChoice2, inputValue);
-        System.out.println(inputValue + userChoice1 + " to " + userChoice2 + " is " + user.convert() + userChoice2);
-    } */
