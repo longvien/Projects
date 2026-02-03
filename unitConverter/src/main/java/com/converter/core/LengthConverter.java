@@ -19,7 +19,7 @@ public class LengthConverter implements Convert {
         if (userChoice1Index > userChoice2Index) {
            int subtract = userChoice1Index - userChoice2Index;
            double a = Math.pow(10, -subtract);
-            destinationValue = this.inputValue * a;
+           destinationValue = this.inputValue * a;
         }
         else if (userChoice2Index > userChoice1Index) {
             int subtract = userChoice2Index - userChoice1Index;
@@ -31,5 +31,19 @@ public class LengthConverter implements Convert {
         }
         return destinationValue;
     }
-}
 
+    public static LengthConverter getLengthConverter(String userChoice1, String userChoice2, double inputValue) {
+        String[] unitLength = {"km", "hm", "dam", "m", "dm", "cm", "mm"};
+        int userChoice1Index = 0;
+        int userChoice2Index = 0;
+        for (int i = unitLength.length - 1; i >= 0; i--) {
+            if (unitLength[i].equals(userChoice1)) {
+                userChoice1Index = i;
+            }
+            if (unitLength[i].equals(userChoice2)) {
+                userChoice2Index = i;
+            }
+        }
+        return new LengthConverter(userChoice1Index, userChoice2Index, inputValue);
+    }
+}

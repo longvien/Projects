@@ -1,6 +1,4 @@
 package com.converter;
-import com.converter.core.LengthConverter;
-// import java.util.Scanner;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -8,9 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import com.converter.core.LengthConverter;
+import com.converter.core.WeightConverter;
 
-
-public class Main extends Application{
+public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
         //lengthConverter();
@@ -31,10 +30,10 @@ public class Main extends Application{
         Label labelL = new Label("Value to convert:");
         TextField textFieldL = new TextField();
         String[] unitLength = {"km", "hm", "dam", "m", "dm", "cm", "mm"};
-        var comboBoxL1 = new ComboBox(FXCollections.observableArrayList(unitLength));
+        var comboBoxL1 = new ComboBox<>(FXCollections.observableArrayList(unitLength));
         Label labelL2 = new Label(" = ");
         Label resultLabelL = new Label();
-        var comboBoxL2 = new ComboBox(FXCollections.observableArrayList(unitLength));
+        var comboBoxL2 = new ComboBox<>(FXCollections.observableArrayList(unitLength));
         Button buttonL = new Button("Convert");
         //button.setStyle("-fx-background-color: #FF0000;"); set button red.
 
@@ -43,7 +42,7 @@ public class Main extends Application{
             double inputValue = Double.parseDouble(value);
             String userChoice1 = String.valueOf(comboBoxL1.getValue());
             String userChoice2 = String.valueOf(comboBoxL2.getValue());
-            LengthConverter user = getLengthConverter(userChoice1, userChoice2, inputValue);
+            LengthConverter user = LengthConverter.getLengthConverter(userChoice1, userChoice2, inputValue);
             resultLabelL.setText(String.valueOf(user.convert()));
         });
 
@@ -56,12 +55,21 @@ public class Main extends Application{
         // Weight Converter
         Label labelW = new Label("Value to convert:");
         TextField textFieldW = new TextField();
-        String[] unitWeight = {"ton", "quintal", "dam", "m", "dm", "cm", "mm"};
-        var comboBoxW1 = new ComboBox(FXCollections.observableArrayList(unitWeight));
+        String[] unitWeight = {"ton", "quintal", "kilogram", "hectogram", "decagram", "gram", "decigram", "centigram", "milligram"};
+        var comboBoxW1 = new ComboBox<>(FXCollections.observableArrayList(unitWeight));
         Label labelW2 = new Label(" = ");
         Label resultLabelW = new Label();
-        var comboBoxW2 = new ComboBox(FXCollections.observableArrayList(unitWeight));
+        var comboBoxW2 = new ComboBox<>(FXCollections.observableArrayList(unitWeight));
         Button buttonW = new Button("Convert");
+
+        buttonW.setOnAction(e -> {
+            String value = textFieldW.getText();
+            double inputValue = Double.parseDouble(value);
+            String userChoice1 = String.valueOf(comboBoxW1.getValue());
+            String userChoice2 = String.valueOf(comboBoxW2.getValue());
+            WeightConverter user = WeightConverter.getWeightConverter(userChoice1, userChoice2, inputValue);
+            resultLabelW.setText(String.valueOf(user.convert()));
+        });
 
         HBox layoutW = new HBox(labelW, textFieldW, comboBoxW1, labelW2, resultLabelW, comboBoxW2, buttonW);
         root.setTop(mb);
@@ -73,19 +81,5 @@ public class Main extends Application{
 
         m1.setOnAction(e -> root.setCenter(layoutL));
         m2.setOnAction(e -> root.setCenter(layoutW));
-    }
-    public static LengthConverter getLengthConverter(String userChoice1, String userChoice2, double inputValue) {
-        String[] unitLength = {"km", "hm", "dam", "m", "dm", "cm", "mm"};
-        int userChoice1Index = 0;
-        int userChoice2Index = 0;
-        for (int i = unitLength.length - 1; i >= 0; i--) {
-            if (unitLength[i].equals(userChoice1)) {
-                userChoice1Index = i;
-            }
-            if (unitLength[i].equals(userChoice2)) {
-                userChoice2Index = i;
-            }
-        }
-        return new LengthConverter(userChoice1Index, userChoice2Index, inputValue);
     }
 }
