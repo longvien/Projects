@@ -1,5 +1,6 @@
 package com.converter;
 
+import com.converter.core.TemperatureConverter;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
@@ -22,7 +23,8 @@ public class Main extends Application {
         Menu m = new Menu("Menu");
         MenuItem m1 = new MenuItem("Length Converter");
         MenuItem m2 = new MenuItem("Weight Converter");
-        m.getItems().addAll(m1, m2);
+        MenuItem m3 = new MenuItem("Temperature Converter");
+        m.getItems().addAll(m1, m2, m3);
         MenuBar mb = new MenuBar();
         mb.getMenus().add(m);
 
@@ -75,11 +77,35 @@ public class Main extends Application {
         root.setTop(mb);
         root.setCenter(layoutW);
 
+
+        // Temperature Converter
+        Label labelT = new Label("Value to convert:");
+        TextField textFieldT = new TextField();
+        String[] unitTemperature = {"Celsius °C", "Fahrenheit °F", "Kelvin K"};
+        var comboBoxT1 = new ComboBox<>(FXCollections.observableArrayList(unitTemperature));
+        Label labelT2 = new Label(" = ");
+        Label resultLabelT = new Label();
+        var comboBoxT2 = new ComboBox<>(FXCollections.observableArrayList(unitTemperature));
+        Button buttonT = new Button("Convert");
+
+        buttonT.setOnAction(e -> {
+            String value = textFieldT.getText();
+            double inputValue = Double.parseDouble(value);
+            String userChoice1 = String.valueOf(comboBoxT1.getValue());
+            String userChoice2 = String.valueOf(comboBoxT2.getValue());
+            TemperatureConverter user = new TemperatureConverter(userChoice1, userChoice2, inputValue);
+            resultLabelT.setText(String.valueOf(user.convert()));
+        });
+
+        HBox layoutT = new HBox(labelT, textFieldT, comboBoxT1, labelT2, resultLabelT, comboBoxT2, buttonT);
+        root.setTop(mb);
+        root.setCenter(layoutT);
+
         Scene scene = new Scene(root, 1000, 400);
         stage.setScene(scene);
         stage.show();
-
         m1.setOnAction(e -> root.setCenter(layoutL));
         m2.setOnAction(e -> root.setCenter(layoutW));
+        m3.setOnAction(e -> root.setCenter(layoutT));
     }
 }
