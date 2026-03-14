@@ -1,5 +1,6 @@
 package com.converter;
 
+import com.converter.core.DataSizeConverter;
 import com.converter.core.TemperatureConverter;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -24,7 +25,8 @@ public class Main extends Application {
         MenuItem m1 = new MenuItem("Length Converter");
         MenuItem m2 = new MenuItem("Weight Converter");
         MenuItem m3 = new MenuItem("Temperature Converter");
-        m.getItems().addAll(m1, m2, m3);
+        MenuItem m4 = new MenuItem("Data Size Converter");
+        m.getItems().addAll(m1, m2, m3, m4);
         MenuBar mb = new MenuBar();
         mb.getMenus().add(m);
 
@@ -101,11 +103,36 @@ public class Main extends Application {
         root.setTop(mb);
         root.setCenter(layoutT);
 
+        // DataSizeConverter
+        Label labelD = new Label("Value to Convert:");
+        TextField textFieldD = new TextField();
+        String[] unitDataSize = {"bit (b)", "byte (B)", "kilobyte (KB)", "megabyte (MB)", "gigabyte (GB)", "terabyte (TB)"};
+        var comboBoxD1 = new ComboBox<>(FXCollections.observableArrayList(unitDataSize));
+        Label labelD2 = new Label("=");
+        Label resultLabelD = new Label();
+        var comboBoxD2 = new ComboBox<>(FXCollections.observableArrayList(unitDataSize));
+        Button buttonD = new Button("Convert");
+
+        buttonD.setOnAction(e -> {
+           String value = textFieldD.getText();
+           double inputValue = Double.parseDouble(value);
+           String depUnit= String.valueOf(comboBoxD1.getValue());
+           String desUnit = String.valueOf(comboBoxD2.getValue());
+           DataSizeConverter user = DataSizeConverter.getDataSizeConverter(depUnit, desUnit, inputValue);
+           resultLabelD.setText(String.valueOf(user.convert()));
+        });
+
+        HBox layoutD = new HBox(labelD, textFieldD, comboBoxD1, labelD2, resultLabelD, comboBoxD2, buttonD);
+        root.setTop(mb);
+        root.setCenter(layoutD);
+
+        // Scene / MenuBar Settings
         Scene scene = new Scene(root, 1000, 400);
         stage.setScene(scene);
         stage.show();
         m1.setOnAction(e -> root.setCenter(layoutL));
         m2.setOnAction(e -> root.setCenter(layoutW));
         m3.setOnAction(e -> root.setCenter(layoutT));
+        m4.setOnAction(e -> root.setCenter(layoutD));
     }
 }

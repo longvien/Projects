@@ -1,6 +1,8 @@
 package com.converter.core;
 
-public class TemperatureConverter {
+import com.converter.Convert;
+
+public class TemperatureConverter implements Convert {
     private String userChoice1;
     private String userChoice2;
     private double value;
@@ -11,6 +13,7 @@ public class TemperatureConverter {
         this.value = inVal;
     }
 
+    @Override
     public double convert() {
         double result = 0.0d;
         if (userChoice1.equals("Celsius °C") && userChoice2.equals("Fahrenheit °F")) {
