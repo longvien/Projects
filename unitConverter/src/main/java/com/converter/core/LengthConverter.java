@@ -6,7 +6,6 @@ public class LengthConverter implements Convert {
     private final int userChoice2Index;
     private final double inputValue;
 
-
     public LengthConverter(int userChoice1Index, int userChoice2Index, double inputValue) {
         this.userChoice1Index = userChoice1Index;
         this.userChoice2Index = userChoice2Index;
